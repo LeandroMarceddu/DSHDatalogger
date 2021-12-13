@@ -3,7 +3,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-#define cardSelect 4;
+#define cardSelect 4
 
 File logfile;
 RTC_DS3231 rtc;
