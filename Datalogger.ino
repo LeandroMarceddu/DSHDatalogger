@@ -8,7 +8,8 @@
 File logfile;
 RTC_DS3231 rtc;
 
-const float calibZero = 0.2;
+const float calibZero = 0.42;
+float mv_per_lsb = 3600.0F/1024.0F;
 float V, P;
 
 void setup () {
@@ -24,17 +25,22 @@ void setup () {
   }
   pinMode(13, OUTPUT);
 
-  if (!SD.begin(cardSelect)) {
+  /*if (!SD.begin(cardSelect)) {
     Serial.println("Card init. failed!");
     error(2);
-  }
+  }*/
+  analogReference(AR_DEFAULT);
+  analogReadResolution(12);
 }
 
 void loop() {
   DateTime now = rtc.now();
-  V = analogRead(0);
-  
+  V = analogRead(0) * 3.3 / 4096;
+  Serial.println(V);
+  P = (V - calibZero) * 400;
+  Serial.println(P);
 
+  delay(500);
 }
 
 void error(uint8_t errno) {
